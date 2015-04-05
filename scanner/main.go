@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strings"
 	"text/scanner"
 )
@@ -38,6 +39,18 @@ var
 			break
 		}
 		fmt.Println(s.TokenText() + ":" + scanner.TokenString(tok))
+	}
+
+	fmt.Println("----------------")
+	f, _ := os.OpenFile("main.go", os.O_APPEND, 0666)
+	defer f.Close()
+	s.Init(f)
+	for {
+		tok := s.Scan()
+		if tok == scanner.EOF {
+			break
+		}
+		fmt.Println("main.go", s.TokenText()+":"+scanner.TokenString(tok))
 	}
 
 }
